@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+import dataBase.db  # Import du fichier db.py
 
 # Remplacez 'YOUR_BOT_TOKEN' par votre vrai token du bot
 TOKEN = 'MTE2NzE1MTM3NzkwNzE4Nzc1NA.G1apLs.fPItFX-lE16PeINJbbFGqu4y09mMXfBdY1k9tA'
