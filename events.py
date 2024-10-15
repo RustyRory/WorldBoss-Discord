@@ -6,7 +6,10 @@ from database import insert_guild, get_channel_wb_id, get_boss_id  # Importez vo
 async def handle_guild_join(guild, bot):
     """Gère l'ajout d'une guilde lors de son adhésion."""
     insert_guild(guild.id)  # Appel de la fonction d'insertion directement
+    send_messages_to_guild(guild, bot)
 
+async def send_messages_to_guild(guild, bot):
+    """Envoyer des messages à tous les serveurs."""
     # Récupérer le channel_wb_id
     channel_wb_id = get_channel_wb_id(guild.id)
 
@@ -51,4 +54,4 @@ async def handle_guild_join(guild, bot):
 async def send_messages_to_all_guilds(bot):
     """Envoyer des messages à tous les serveurs."""
     for guild in bot.guilds:
-        await handle_guild_join(guild, bot)
+        await send_messages_to_guild(guild, bot)
