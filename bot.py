@@ -1,26 +1,27 @@
-# bot.py
-
-import os  # Ajoutez cette ligne
 import discord
 from discord.ext import commands
-from events import handle_guild_join, send_messages_to_all_guilds  # Importer la fonction
+from config import TOKEN
+from events.handle_on_ready import handle_on_ready
+from events.handle_on_guild_join import handle_on_guild_join 
 
-# Créez votre bot avec les intents nécessaires
+# Définir les intents
 intents = discord.Intents.default()
-bot = commands.Bot(command_prefix="!", intents=intents)
+intents.members = True  # Activer l'intent pour accéder aux membres
+intents.message_content = True  # Activer l'intent pour le contenu des messages
 
-# Autres parties de votre code...
 
+# Créer une instance de bot avec un préfixe de commande et les intents
+bot = commands.Bot(command_prefix='!', intents=intents)
+
+# Événement lorsque le bot est prêt
 @bot.event
 async def on_ready():
-    print(f"Bot connecté en tant que {bot.user}")
+    await handle_on_ready(bot)
 
-    # Envoie des messages à tous les guildes enregistrées dans la base de données
-    await send_messages_to_all_guilds(bot)  # Appelle la fonction pour traiter toutes les guildes
-
+# Événement lorsque le bot rejoint une guilde
 @bot.event
 async def on_guild_join(guild):
-    await handle_guild_join(guild, bot)  # Appelle la fonction depuis init.py
+    await handle_on_guild_join(guild, bot)
 
-# Lancez le bot
-bot.run(os.getenv("DISCORD_TOKEN"))
+# Démarrer le bot avec le token
+bot.run(TOKEN)
